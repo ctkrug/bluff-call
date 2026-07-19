@@ -31,8 +31,11 @@ No approximation, no heuristic bot's guess.
 
 ## Status
 
-Early scaffold. See [`docs/VISION.md`](docs/VISION.md) for the product plan and
-[`docs/BACKLOG.md`](docs/BACKLOG.md) for the build breakdown.
+Playable end to end: deal, bet/check/call/fold, AI sampled from the real equilibrium,
+bankroll, hand history, and the margin-proof reveal. See
+[`docs/VISION.md`](docs/VISION.md) for the product plan, [`docs/BACKLOG.md`](docs/BACKLOG.md)
+for the story-level build breakdown, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for
+how the modules fit together.
 
 ## Development
 
@@ -42,6 +45,9 @@ npm run dev      # local dev server
 npm test         # run the test suite
 npm run build    # production build to dist/
 ```
+
+Add `?seed=<number>` to the dev URL to make dealing and AI actions deterministic — useful
+for manually reaching a specific line (e.g. a bluff) while testing.
 
 ## License
 
