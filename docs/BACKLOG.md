@@ -6,7 +6,7 @@ moment — it must be reachable before anything else in this backlog is built.
 
 ## Epic 1 — Core game and the equilibrium reveal
 
-- [ ] **Play a full hand and see the GTO reveal (wow moment)**
+- [x] **Play a full hand and see the GTO reveal (wow moment)**
   A player can play one complete hand of Kuhn poker end-to-end against the AI —
   deal, bet/check/call/fold, showdown — and immediately see a reveal stating the
   exact equilibrium action and frequency for the card(s) in play.
@@ -19,7 +19,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - Losing a hand to a bluff produces a reveal that explicitly names the bluffing
       frequency for the card that beat the player.
 
-- [ ] **Kuhn poker rules engine**
+- [x] **Kuhn poker rules engine**
   Deck of 3 ranks (J/Q/K), deal one card to each player, single betting round with
   check/bet/call/fold, correct showdown/win resolution.
   - Acceptance criteria:
@@ -30,7 +30,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - Unit tests cover all five terminal betting sequences and assert the correct
       pot winner for each.
 
-- [ ] **Solved equilibrium strategy module**
+- [x] **Solved equilibrium strategy module**
   A pure, tested module implementing the published Kuhn poker Nash equilibrium
   (parameterized by bluffing frequency α), covering every player, card, and betting
   history combination.
@@ -44,7 +44,7 @@ moment — it must be reachable before anything else in this backlog is built.
       documented behavior either way) rather than silently producing an invalid
       strategy.
 
-- [ ] **AI plays sampled equilibrium actions**
+- [x] **AI plays sampled equilibrium actions**
   The AI's move each decision point is a random sample drawn from the equilibrium
   distribution for its actual card and the current betting history — not the single
   most-likely action.
@@ -54,7 +54,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - Over a large simulated sample (e.g. 10,000 hands with the Jack checked to), the
       AI's observed bluff rate is within a small tolerance of α.
 
-- [ ] **Session bankroll**
+- [x] **Session bankroll**
   A running bankroll persists across hands within a session, updated correctly after
   every showdown or fold.
   - Acceptance criteria:
@@ -65,7 +65,7 @@ moment — it must be reachable before anything else in this backlog is built.
 
 ## Epic 2 — Feel, motion, and the margin-proof reveal
 
-- [ ] **Card table visual design**
+- [x] **Card table visual design**
   Implements `docs/DESIGN.md`'s paper-and-ink direction: tokens, type pairing, the
   desk-scene hero layout, and the right-hand/drawer ledger.
   - Acceptance criteria:
@@ -74,7 +74,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - The desk scene occupies ≥60% of viewport height on a 1440×900 layout.
     - No pure `#000`/`#fff` surfaces anywhere in the stylesheet.
 
-- [ ] **Deal, flip, bet, and fold animations**
+- [x] **Deal, flip, bet, and fold animations**
   Every card and chip action has a tweened animation per the juice plan, not an
   instant state swap.
   - Acceptance criteria:
@@ -85,7 +85,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - `prefers-reduced-motion: reduce` disables shake/rotation/particle effects
       while keeping the action fully functional.
 
-- [ ] **The margin-proof reveal panel**
+- [x] **The margin-proof reveal panel**
   The signature detail: a torn-margin strip that slides in with the hand-inked
   annotation after every hand, positioned per the layout intent (side panel on
   desktop, drawer on phone).
@@ -95,7 +95,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - On a 390px-wide viewport the reveal is reachable and fully readable without
       horizontal scrolling.
 
-- [ ] **Synth sound effects with persistent mute**
+- [x] **Synth sound effects with persistent mute**
   All SFX from the juice plan (flip, chip bet, bet thud, fold swoosh, reveal chime,
   win arpeggio) are generated via WebAudio oscillators/noise — zero binary audio
   assets — with a mute toggle.
@@ -106,7 +106,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - The `AudioContext` is created lazily on first user gesture, and code that
       touches WebAudio is guarded so tests (no real audio hardware) don't throw.
 
-- [ ] **Responsive layout and design self-review**
+- [x] **Responsive layout and design self-review**
   The full page composes correctly at 390×844, 768×1024, and 1440×900 with no
   overlap, no horizontal scroll, and no dead space, per D3 of the design standard.
   - Acceptance criteria:
@@ -120,7 +120,7 @@ moment — it must be reachable before anything else in this backlog is built.
 
 ## Epic 3 — Session depth and replay value
 
-- [ ] **Hand history log**
+- [x] **Hand history log**
   Every completed hand in the current session is listed with cards, action
   sequence, and outcome, most recent first.
   - Acceptance criteria:
@@ -129,7 +129,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - Each entry shows enough detail (both cards once revealed, final pot, winner)
       to reconstruct what happened without replaying it.
 
-- [ ] **Session stats: bluff accuracy vs. equilibrium**
+- [x] **Session stats: bluff accuracy vs. equilibrium**
   A running stat compares the player's actual bet/check/call/fold decisions against
   what the equilibrium would have done with the same card and history, expressed as
   a percentage.
@@ -139,7 +139,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - A deterministic test sequence of known player decisions produces the expected
       accuracy percentage.
 
-- [ ] **Win celebration on session milestone**
+- [x] **Win celebration on session milestone**
   Reaching a bankroll milestone (e.g. session high) triggers the win-celebration
   juice: ink-splatter burst, stats recap card, and a "Play Again"/continue CTA.
   - Acceptance criteria:
@@ -148,7 +148,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - The recap card shows at least hands-played and bluff-accuracy-vs-equilibrium
       figures pulled from real session state, not placeholder numbers.
 
-- [ ] **New session / reset flow**
+- [x] **New session / reset flow**
   A player can start a fresh session (bankroll and history reset) without reloading
   the page.
   - Acceptance criteria:
@@ -157,7 +157,7 @@ moment — it must be reachable before anything else in this backlog is built.
     - Reset is confirmed (not a single accidental click away) if the current session
       has a non-zero hand count.
 
-- [ ] **Design polish pass**
+- [x] **Design polish pass**
   A dedicated pass to close any gap between the shipped UI and `docs/DESIGN.md` found
   during the Epic 2 self-review, applied across the whole app rather than left as
   isolated fixes.
