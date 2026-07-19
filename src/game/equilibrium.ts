@@ -53,6 +53,11 @@ const PASSIVE_ACTION: Readonly<Record<DecisionPoint, Action>> = {
   opponent_facing_bet: "fold",
 };
 
+/** The action whose probability alpha (or a fixed indifference value) controls at this decision point. */
+export function aggressiveActionFor(decisionPoint: DecisionPoint): Action {
+  return AGGRESSIVE_ACTION[decisionPoint];
+}
+
 type AlphaFn = (alpha: number) => number;
 
 /** Probability of the aggressive action, by decision point and card held. */
