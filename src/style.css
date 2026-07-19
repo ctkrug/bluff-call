@@ -1,0 +1,93 @@
+/* Design tokens — docs/DESIGN.md "paper-and-ink" direction. */
+:root {
+  --bg: #f4ecd8;
+  --surface-1: #eee2c5;
+  --surface-2: #e3d3a4;
+  --text: #241f16;
+  --text-muted: #6b5f45;
+  --accent: #b3312c;
+  --accent-support: #2f5d62;
+  --success: #3f7d4f;
+  --danger: #b3312c;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-ui: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 2px;
+  --radius-btn: 6px;
+
+  --shadow-card: 0 2px 6px rgba(36, 31, 22, 0.18), 0 1px 2px rgba(36, 31, 22, 0.12);
+  --shadow-panel: -4px 0 16px rgba(36, 31, 22, 0.18);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-ui: 180ms;
+  --duration-deal: 120ms;
+  --duration-chip: 90ms;
+  --duration-panel: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-ui: 1ms;
+    --duration-deal: 1ms;
+    --duration-chip: 1ms;
+    --duration-panel: 1ms;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(179, 49, 44, 0.05), transparent 40%),
+    radial-gradient(circle at 80% 85%, rgba(47, 93, 98, 0.05), transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  color: var(--text);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--text);
+  margin: 0;
+}
+
+button,
+select {
+  font-family: var(--font-ui);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent-support);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
