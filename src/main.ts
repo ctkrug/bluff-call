@@ -35,6 +35,7 @@ interface GameState {
   sessionStats: SessionStats;
   handHistory: HandHistoryEntry[];
   handActive: boolean;
+  pendingMilestone: boolean;
 }
 
 function pickRng(): Rng {
@@ -159,6 +160,7 @@ function mount(): void {
     sessionStats: createSessionStats(initialBankroll.startingBalance),
     handHistory: [],
     handActive: true,
+    pendingMilestone: false,
   };
 
   function potChips(history: History): number {
@@ -304,9 +306,11 @@ function mount(): void {
     if (result.winner === "player") {
       window.setTimeout(() => sound.playWin(), 200);
     }
-    if (milestoneReached) {
-      window.setTimeout(showCelebration, 500);
-    }
+    // Deferred until "Next hand" is dismissed — the reveal panel is the
+    // primary, non-interruptive moment (per docs/DESIGN.md); stacking a
+    // full-screen celebration on top of it at the same time would compete
+    // with it instead of following it.
+    state.pendingMilestone = milestoneReached;
   }
 
   function applyAction(action: Action): void {
@@ -359,7 +363,15 @@ function mount(): void {
     applyAction(button.dataset.action as Action);
   });
 
-  els.nextHandButton.addEventListener("click", startHand);
+  els.nextHandButton.addEventListener("click", () => {
+    closeMarginPanel();
+    if (state.pendingMilestone) {
+      state.pendingMilestone = false;
+      showCelebration();
+    } else {
+      startHand();
+    }
+  });
 
   els.historyToggle.addEventListener("click", () => {
     const open = els.historyList.classList.toggle("open");
@@ -381,7 +393,10 @@ function mount(): void {
     startHand();
   });
 
-  els.celebrationClose.addEventListener("click", hideCelebration);
+  els.celebrationClose.addEventListener("click", () => {
+    hideCelebration();
+    startHand();
+  });
 
   els.muteToggle.addEventListener("click", () => {
     const muted = sound.toggleMute();
