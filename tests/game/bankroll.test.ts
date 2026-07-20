@@ -87,4 +87,14 @@ describe("save/loadBankroll round trip", () => {
     const customFallback = createBankroll(100);
     expect(loadBankroll(storage, customFallback)).toEqual(customFallback);
   });
+
+  it("does not throw when persistent storage rejects a write", () => {
+    const storage: KeyValueStorage = {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("storage disabled");
+      },
+    };
+    expect(() => saveBankroll(createBankroll(), storage)).not.toThrow();
+  });
 });
