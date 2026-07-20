@@ -51,4 +51,11 @@ describe("sampleEquilibriumAction", () => {
     const observedRate = bets / trials;
     expect(Math.abs(observedRate - 3 * alpha)).toBeLessThan(0.02);
   });
+
+  it.each([Number.NaN, -0.01, 1, Number.POSITIVE_INFINITY])(
+    "rejects an out-of-range RNG value (%s)",
+    (roll) => {
+      expect(() => sampleEquilibriumAction("J", [], 0.2, () => roll)).toThrow(RangeError);
+    },
+  );
 });
