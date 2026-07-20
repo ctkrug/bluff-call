@@ -39,16 +39,20 @@ describe("app bootstrap", () => {
   });
 
   it("advances the hand and shows the reveal panel after checking through to showdown", async () => {
+    vi.useFakeTimers();
     await import("../../src/main");
 
     const checkButton = document.querySelector<HTMLButtonElement>('button[data-action="check"]');
     expect(checkButton).toBeTruthy();
     checkButton?.click();
+    await vi.advanceTimersByTimeAsync(600);
 
-    // The AI's response is scheduled via setTimeout; the hand isn't resolved synchronously,
-    // but the click itself must not throw and the player's own action should already be recorded.
+    const foldButton = document.querySelector<HTMLButtonElement>('button[data-action="fold"]');
+    if (foldButton && !foldButton.disabled) foldButton.click();
+
     const panel = document.getElementById("margin-panel");
-    expect(panel).toBeTruthy();
+    expect(panel?.classList.contains("open")).toBe(true);
+    expect(document.getElementById("margin-decisions")?.children.length).toBeGreaterThan(0);
   });
 
   it("cancels a pending AI response when a new session starts", async () => {
