@@ -28,6 +28,12 @@ describe("actingSeat", () => {
     expect(actingSeat(["check", "bet", "call"])).toBeNull();
     expect(actingSeat(["check", "bet", "fold"])).toBeNull();
   });
+
+  it("rejects malformed action sequences instead of assigning a seat", () => {
+    expect(actingSeat(["bet", "bet"])).toBeNull();
+    expect(actingSeat(["check", "call"])).toBeNull();
+    expect(actingSeat(["raise" as never])).toBeNull();
+  });
 });
 
 describe("legalActions", () => {
@@ -48,6 +54,11 @@ describe("legalActions", () => {
     expect(legalActions(["check", "check"])).toEqual([]);
     expect(legalActions(["bet", "fold"])).toEqual([]);
   });
+
+  it("offers nothing for malformed histories", () => {
+    expect(legalActions(["bet", "bet"])).toEqual([]);
+    expect(legalActions(["raise" as never])).toEqual([]);
+  });
 });
 
 describe("isTerminal", () => {
@@ -58,6 +69,11 @@ describe("isTerminal", () => {
   it("is false mid-hand", () => {
     expect(isTerminal(["check"])).toBe(false);
     expect(isTerminal(["check", "bet"])).toBe(false);
+  });
+
+  it("does not mistake invalid histories for finished hands", () => {
+    expect(isTerminal(["bet", "bet"])).toBe(false);
+    expect(isTerminal(["raise" as never])).toBe(false);
   });
 });
 
@@ -99,5 +115,6 @@ describe("resolveHand — all five terminal sequences", () => {
   it("throws on a non-terminal history", () => {
     expect(() => resolveHand(["check"], "K", "J")).toThrow();
     expect(() => resolveHand([] as History, "K", "J")).toThrow();
+    expect(() => resolveHand(["bet", "bet"], "K", "J")).toThrow();
   });
 });
