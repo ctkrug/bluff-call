@@ -23,7 +23,11 @@ export interface KeyValueStorage {
 }
 
 export function saveBankroll(state: BankrollState, storage: KeyValueStorage): void {
-  storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // A completed hand remains playable when browser storage is unavailable.
+  }
 }
 
 function isValidBankrollState(value: unknown): value is BankrollState {
