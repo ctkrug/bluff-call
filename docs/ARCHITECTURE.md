@@ -9,14 +9,14 @@ everything needed to play a session ships in the bundle.
 src/
   game/                 Pure logic — no DOM, fully unit tested.
     rng.ts              Injectable RNG (mulberry32 seeded, or Math.random via systemRng()).
-    cards.ts             J/Q/K deck + Fisher-Yates dealHand(rng).
-    rules.ts             Betting state machine: actingSeat/legalActions/isTerminal/resolveHand.
+    cards.ts             J/Q/K deck + Fisher-Yates dealHand(rng), validates injected RNG output.
+    rules.ts             Betting state machine; rejects unreachable histories before resolving them.
     equilibrium.ts        The solved Kuhn poker Nash equilibrium, parametrized by alpha in [0, 1/3].
     ai.ts                 Samples one action from equilibriumDistribution() using the RNG.
     reveal.ts              Builds the post-hand "wow moment" explanation from history + equilibrium.
     session.ts              Running session stats: accuracy vs. equilibrium, session-high milestone,
                              hand-history formatting.
-    bankroll.ts              Session bankroll + sessionStorage persistence (malformed-state safe).
+    bankroll.ts              Session bankroll + sessionStorage persistence (malformed-state and write safe).
   ui/
     sound.ts               WebAudio-synthesized SFX engine, lazy AudioContext, persisted mute.
   main.ts                   DOM glue: renders the shell, wires the game state machine to the
@@ -81,6 +81,7 @@ stays in range for all 12 combinations.
 npm install
 npm run dev      # local dev server
 npm test         # vitest run — all game/ and ui/ modules
+npm run test:coverage # V8 coverage for all core game modules
 npm run build    # tsc --noEmit && vite build -> dist/
 ```
 
