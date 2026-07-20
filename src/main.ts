@@ -162,6 +162,21 @@ function mount(): void {
     handActive: true,
     pendingMilestone: false,
   };
+  let pendingAiTimer: number | null = null;
+
+  function cancelPendingAiTurn(): void {
+    if (pendingAiTimer === null) return;
+    window.clearTimeout(pendingAiTimer);
+    pendingAiTimer = null;
+  }
+
+  function scheduleAiTurn(): void {
+    cancelPendingAiTurn();
+    pendingAiTimer = window.setTimeout(() => {
+      pendingAiTimer = null;
+      aiTurn();
+    }, AI_THINK_DELAY_MS);
+  }
 
   function potChips(history: History): number {
     return 2 + history.filter((a) => a === "bet" || a === "call").length;
@@ -258,6 +273,7 @@ function mount(): void {
   }
 
   function startHand(): void {
+    cancelPendingAiTurn();
     closeMarginPanel();
     hideCelebration();
     state.deal = dealHand(rng);
@@ -272,6 +288,7 @@ function mount(): void {
   }
 
   function finishHand(): void {
+    cancelPendingAiTurn();
     state.handActive = false;
     const result = resolveHand(state.history, state.deal.player, state.deal.opponent);
     state.bankroll = applyHandResult(state.bankroll, result.playerNet);
@@ -343,7 +360,7 @@ function mount(): void {
     const nextSeat = actingSeat(state.history);
     if (nextSeat === "opponent") {
       els.statusLine.textContent = "AI is thinking…";
-      window.setTimeout(aiTurn, AI_THINK_DELAY_MS);
+      scheduleAiTurn();
     } else {
       els.statusLine.textContent = "Your move.";
     }
