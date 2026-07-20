@@ -19,6 +19,7 @@ src/
     bankroll.ts              Session bankroll + sessionStorage persistence (malformed-state and write safe).
   ui/
     sound.ts               WebAudio-synthesized SFX engine, lazy AudioContext, persisted mute.
+    shell.ts               Static page, game-table, guide, and dialog markup.
   main.ts                   DOM glue: renders the shell, wires the game state machine to the
                              pure `game/` modules, drives animations/sound/persistence.
   style.css                 Design tokens (docs/DESIGN.md) + global/base styles.
