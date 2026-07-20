@@ -7,11 +7,28 @@ export type History = readonly Action[];
 
 export type Seat = "player" | "opponent";
 
+/** Every history that can be reached through Kuhn poker's betting tree. */
+function isReachableHistory(history: History): boolean {
+  const sequence = history.join(",");
+  return [
+    "",
+    "check",
+    "bet",
+    "check,check",
+    "check,bet",
+    "bet,call",
+    "bet,fold",
+    "check,bet,call",
+    "check,bet,fold",
+  ].includes(sequence);
+}
+
 /**
  * Who acts next for a given history, or null if the hand is over.
  * The player always acts first each hand (see docs/ARCHITECTURE.md).
  */
 export function actingSeat(history: History): Seat | null {
+  if (!isReachableHistory(history)) return null;
   if (history.length === 0) return "player";
   if (history.length === 1) return "opponent";
   if (history.length === 2 && history[0] === "check" && history[1] === "bet") {
@@ -21,7 +38,7 @@ export function actingSeat(history: History): Seat | null {
 }
 
 export function isTerminal(history: History): boolean {
-  return history.length > 0 && actingSeat(history) === null;
+  return isReachableHistory(history) && history.length > 0 && actingSeat(history) === null;
 }
 
 /**
