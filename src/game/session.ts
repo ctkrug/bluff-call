@@ -72,7 +72,7 @@ export function describeHistoryEntry(entry: HandHistoryEntry): string {
   const outcome = entry.winner === "player" ? "You won" : "AI won";
   const net = entry.playerNet > 0 ? `+${entry.playerNet}` : `${entry.playerNet}`;
   return (
-    `${outcome} by ${resolution} — you: ${RANK_NAME[entry.playerCard]}, ` +
-    `AI: ${RANK_NAME[entry.opponentCard]} — ${sequence} — net ${net}`
+    `${outcome} by ${resolution} · you: ${RANK_NAME[entry.playerCard]}, ` +
+    `AI: ${RANK_NAME[entry.opponentCard]} · ${sequence} · net ${net}`
   );
 }

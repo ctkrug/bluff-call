@@ -51,7 +51,7 @@ function describeDecision(
   const verb = aggressive === "bet" ? "bets" : "calls";
   return (
     `Holding the ${rankName}, ${actorLabel(actor).toLowerCase()} the equilibrium ` +
-    `${verb} ${pct}% of the time — ${possessive(actor)} actual play was to ${actionTaken}.`
+    `${verb} ${pct}% of the time; ${possessive(actor)} actual play was to ${actionTaken}.`
   );
 }
 
@@ -115,7 +115,7 @@ function buildHeadline(opponentBluff: RevealDecision | undefined, winner: Seat):
   }
   const pct = Math.round(opponentBluff.probability * 100);
   if (winner === "opponent") {
-    return `You lost to a bluff — the AI's Jack takes that line ${pct}% of the time. Here's the proof.`;
+    return `You lost to a bluff. The AI's Jack takes that line ${pct}% of the time. Here's the proof.`;
   }
-  return `The AI tried to bluff with the Jack (it does that ${pct}% of the time here) — but it didn't get there.`;
+  return `The AI tried to bluff with the Jack ${pct}% of the time here, but it didn't get there.`;
 }

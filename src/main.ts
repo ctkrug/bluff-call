@@ -146,7 +146,7 @@ function mount(): void {
   function renderBankroll(): void {
     els.bankrollValue.textContent = String(state.bankroll.balance);
     const accuracy = accuracyPercent(state.sessionStats);
-    els.accuracyValue.textContent = accuracy === null ? "—" : `${accuracy}%`;
+    els.accuracyValue.textContent = accuracy === null ? "Not yet" : `${accuracy}%`;
   }
 
   function renderHistory(): void {
@@ -192,7 +192,7 @@ function mount(): void {
     const accuracy = accuracyPercent(state.sessionStats);
     els.celebrationStats.innerHTML = `
       <div><span class="celebration-stat-value">${state.sessionStats.handsPlayed}</span><span class="celebration-stat-label">Hands played</span></div>
-      <div><span class="celebration-stat-value">${accuracy === null ? "—" : `${accuracy}%`}</span><span class="celebration-stat-label">Equilibrium accuracy</span></div>
+      <div><span class="celebration-stat-value">${accuracy === null ? "n/a" : `${accuracy}%`}</span><span class="celebration-stat-label">Equilibrium accuracy</span></div>
       <div><span class="celebration-stat-value">${state.bankroll.balance}</span><span class="celebration-stat-label">Bankroll</span></div>
     `;
     els.celebration.classList.add("open");

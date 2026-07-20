@@ -50,7 +50,7 @@ export function renderShell(): string {
           </div>
           <div class="accuracy-line">
             <span>Equilibrium accuracy</span>
-            <span class="accuracy-value" id="accuracy-value">—</span>
+            <span class="accuracy-value" id="accuracy-value">Not yet</span>
           </div>
           <button
             id="history-toggle"
