@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 describe("app bootstrap", () => {
   beforeEach(() => {
@@ -8,6 +8,10 @@ describe("app bootstrap", () => {
     // main.ts mounts itself as an import side effect; reset the module
     // registry so each test gets a fresh mount against its own fresh DOM.
     vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("mounts the desk, ledger, and action row into #app", async () => {
@@ -40,5 +44,20 @@ describe("app bootstrap", () => {
     // but the click itself must not throw and the player's own action should already be recorded.
     const panel = document.getElementById("margin-panel");
     expect(panel).toBeTruthy();
+  });
+
+  it("cancels a pending AI response when a new session starts", async () => {
+    vi.useFakeTimers();
+    await import("../../src/main");
+
+    document.querySelector<HTMLButtonElement>('button[data-action="check"]')?.click();
+    document.getElementById("new-session")?.click();
+    await vi.advanceTimersByTimeAsync(600);
+
+    const enabled = Array.from(document.querySelectorAll<HTMLButtonElement>("#action-row button"))
+      .filter((button) => !button.disabled)
+      .map((button) => button.dataset.action)
+      .sort();
+    expect(enabled).toEqual(["bet", "check"]);
   });
 });
