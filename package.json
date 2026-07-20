@@ -20,17 +20,17 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:coverage": "vitest run tests/game --coverage --coverage.include='src/game/**/*.ts' --pool=forks --maxWorkers=1 --minWorkers=1",
+    "test:coverage": "vitest run tests/game --coverage --coverage.include='src/game/**/*.ts' --pool=forks --maxWorkers=1",
     "lint": "eslint ."
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^8.57.0",
     "jsdom": "^29.1.1",
     "typescript": "^5.5.4",
-    "vite": "^5.4.0",
-    "vitest": "^2.0.5"
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10"
   }
 }
