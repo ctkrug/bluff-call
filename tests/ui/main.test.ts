@@ -113,4 +113,24 @@ describe("app bootstrap", () => {
     closeButton?.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true }));
     expect(document.activeElement).toBe(closeButton);
   });
+
+  it("uses the themed confirmation before resetting a played session", async () => {
+    vi.useFakeTimers();
+    window.history.replaceState(null, "", "/?seed=2");
+    await import("../../src/main");
+
+    document.querySelector<HTMLButtonElement>('button[data-action="bet"]')?.click();
+    await vi.advanceTimersByTimeAsync(600);
+    expect(document.getElementById("bankroll-value")?.textContent).toBe("21");
+
+    document.getElementById("new-session")?.click();
+    const confirmation = document.getElementById("reset-confirmation");
+    expect(confirmation?.classList.contains("open")).toBe(true);
+    expect(confirmation?.getAttribute("aria-hidden")).toBe("false");
+    expect(document.activeElement).toBe(document.getElementById("reset-cancel"));
+
+    document.getElementById("reset-confirm")?.click();
+    expect(document.getElementById("bankroll-value")?.textContent).toBe("20");
+    expect(document.getElementById("history-toggle")?.textContent).toBe("Hand history (0)");
+  });
 });

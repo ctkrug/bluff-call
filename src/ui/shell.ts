@@ -150,6 +150,24 @@ export function renderShell(): string {
           <button id="celebration-close" class="btn btn-bet" type="button">Keep playing</button>
         </div>
       </div>
+      <div
+        class="confirmation"
+        id="reset-confirmation"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reset-title"
+        aria-hidden="true"
+      >
+        <div class="confirmation-card">
+          <p class="eyebrow">Clear the ledger?</p>
+          <h2 id="reset-title">Start a new session</h2>
+          <p>This resets your bankroll, accuracy, and hand history.</p>
+          <div class="confirmation-actions">
+            <button id="reset-cancel" class="btn btn-ghost" type="button">Keep this session</button>
+            <button id="reset-confirm" class="btn btn-fold" type="button">Reset session</button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }

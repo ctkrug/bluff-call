@@ -75,6 +75,9 @@ function mount(): void {
     celebration: requireElement<HTMLDivElement>("celebration"),
     celebrationStats: requireElement<HTMLDivElement>("celebration-stats"),
     celebrationClose: requireElement<HTMLButtonElement>("celebration-close"),
+    resetConfirmation: requireElement<HTMLDivElement>("reset-confirmation"),
+    resetCancel: requireElement<HTMLButtonElement>("reset-cancel"),
+    resetConfirm: requireElement<HTMLButtonElement>("reset-confirm"),
     muteToggle: requireElement<HTMLButtonElement>("mute-toggle"),
     muteIcon: requireElement<HTMLSpanElement>("mute-icon"),
   };
@@ -203,6 +206,28 @@ function mount(): void {
   function hideCelebration(): void {
     els.celebration.classList.remove("open");
     els.celebration.setAttribute("aria-hidden", "true");
+  }
+
+  function showResetConfirmation(): void {
+    els.resetConfirmation.classList.add("open");
+    els.resetConfirmation.setAttribute("aria-hidden", "false");
+    els.resetCancel.focus();
+  }
+
+  function hideResetConfirmation(): void {
+    els.resetConfirmation.classList.remove("open");
+    els.resetConfirmation.setAttribute("aria-hidden", "true");
+  }
+
+  function resetSession(): void {
+    const fresh = createBankroll();
+    state.bankroll = fresh;
+    state.sessionStats = createSessionStats(fresh.startingBalance);
+    state.handHistory = [];
+    saveBankroll(fresh, window.sessionStorage);
+    renderBankroll();
+    renderHistory();
+    startHand();
   }
 
   function renderMuteState(muted: boolean): void {
@@ -336,17 +361,34 @@ function mount(): void {
 
   els.newSessionButton.addEventListener("click", () => {
     if (state.sessionStats.handsPlayed > 0) {
-      const confirmed = window.confirm("Start a new session? This resets your bankroll and hand history.");
-      if (!confirmed) return;
+      showResetConfirmation();
+      return;
     }
-    const fresh = createBankroll();
-    state.bankroll = fresh;
-    state.sessionStats = createSessionStats(fresh.startingBalance);
-    state.handHistory = [];
-    saveBankroll(fresh, window.sessionStorage);
-    renderBankroll();
-    renderHistory();
-    startHand();
+    resetSession();
+  });
+
+  els.resetCancel.addEventListener("click", () => {
+    hideResetConfirmation();
+    els.newSessionButton.focus();
+  });
+
+  els.resetConfirm.addEventListener("click", () => {
+    hideResetConfirmation();
+    resetSession();
+  });
+
+  els.resetConfirmation.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      hideResetConfirmation();
+      els.newSessionButton.focus();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const target = event.shiftKey ? els.resetCancel : els.resetConfirm;
+    if (document.activeElement === target) {
+      event.preventDefault();
+      (event.shiftKey ? els.resetConfirm : els.resetCancel).focus();
+    }
   });
 
   els.celebrationClose.addEventListener("click", () => {
