@@ -20,6 +20,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:coverage": "vitest run tests/game --coverage --coverage.include='src/game/**/*.ts' --pool=forks --maxWorkers=1 --minWorkers=1",
     "lint": "eslint ."
   },
   "devDependencies": {
