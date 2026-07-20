@@ -356,6 +356,12 @@ function mount(): void {
     els.celebration.classList.remove("open");
   }
 
+  function renderMuteState(muted: boolean): void {
+    els.muteToggle.setAttribute("aria-pressed", String(muted));
+    els.muteToggle.setAttribute("aria-label", muted ? "Unmute sound" : "Mute sound");
+    els.muteIcon.innerHTML = muted ? "&#128263;" : "&#128266;";
+  }
+
   function startHand(): void {
     cancelPendingAiTurn();
     closeMarginPanel();
@@ -500,15 +506,10 @@ function mount(): void {
   });
 
   els.muteToggle.addEventListener("click", () => {
-    const muted = sound.toggleMute();
-    els.muteToggle.setAttribute("aria-pressed", String(muted));
-    els.muteToggle.setAttribute("aria-label", muted ? "Unmute sound" : "Mute sound");
-    els.muteIcon.innerHTML = muted ? "&#128263;" : "&#128266;";
+    renderMuteState(sound.toggleMute());
   });
 
-  const initiallyMuted = sound.isMuted();
-  els.muteToggle.setAttribute("aria-pressed", String(initiallyMuted));
-  els.muteIcon.innerHTML = initiallyMuted ? "&#128263;" : "&#128266;";
+  renderMuteState(sound.isMuted());
 
   renderBankroll();
   renderHistory();

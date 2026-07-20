@@ -82,4 +82,14 @@ describe("app bootstrap", () => {
       .sort();
     expect(enabled).toEqual(["bet", "check"]);
   });
+
+  it("labels a restored muted state as the action to unmute", async () => {
+    window.localStorage.setItem("bluff-call:muted", "true");
+
+    await import("../../src/main");
+
+    const muteToggle = document.getElementById("mute-toggle");
+    expect(muteToggle?.getAttribute("aria-pressed")).toBe("true");
+    expect(muteToggle?.getAttribute("aria-label")).toBe("Unmute sound");
+  });
 });
