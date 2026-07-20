@@ -17,6 +17,9 @@ export function sampleEquilibriumAction(
 ): Action {
   const distribution = equilibriumDistribution(card, history, alpha);
   const roll = rng();
+  if (!Number.isFinite(roll) || roll < 0 || roll >= 1) {
+    throw new RangeError(`RNG must return a finite value in [0, 1), got ${roll}`);
+  }
   let cumulative = 0;
   for (const { action, probability } of distribution) {
     cumulative += probability;
