@@ -1,66 +1,101 @@
 # Bluff Call
 
-A single-player bluffing game against an AI that plays the mathematically **solved**
-optimal strategy for Kuhn poker. Lose a hand to a well-timed bluff, then see the
-reveal: the exact Nash-equilibrium frequency the AI (or you) should have bluffed or
-folded with that card, and why.
+**▶ Live demo: [apps.charliekrug.com/bluff-call](https://apps.charliekrug.com/bluff-call/)**
 
-## Why
+[![CI](https://github.com/ctkrug/bluff-call/actions/workflows/ci.yml/badge.svg)](https://github.com/ctkrug/bluff-call/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-b3312c.svg)](LICENSE)
 
-Most "AI" poker opponents are heuristics or trained bots — you can beat them, but you
-can never be sure the coaching after a hand is actually correct. Kuhn poker (Kuhn,
-1950) is small enough that its Nash equilibrium is fully solved in closed form. Bluff
-Call plays that exact equilibrium and shows you the real numbers after every hand:
-"the GTO-optimal move here was to bluff 33% of the time with this card — here's why."
-No approximation, no heuristic bot's guess.
+**Play a hand. See the solved move.**
 
-## How it works
-
-- **The game**: Kuhn poker — a 3-card deck (Jack, Queen, King), one card each, one
-  round of check/bet/call/fold betting, played to a running bankroll.
-- **The opponent**: implements the published equilibrium strategy (parameterized by a
-  single bluffing frequency `α`), not a trained or heuristic model.
-- **The reveal**: after every hand, an annotated breakdown shows the equilibrium
-  action and frequency for the cards involved, and how your actual decision compared.
+Bluff Call is a three-card poker lesson for players who want to understand game
+theory without studying a solver chart first. You play Kuhn poker against its Nash
+equilibrium strategy. After every hand, a red margin proof shows the exact optimal
+frequency behind each action that reached the table.
 
 ![A completed Bluff Call hand with the equilibrium proof in the margin](docs/assets/bluff-call-gameplay.png)
 
-### One hand, start to finish
+## Why Kuhn poker
 
-1. You are dealt one of three cards and act first: check or bet.
-2. The AI responds by sampling the solved equilibrium for its hidden card.
-3. If a bet is made, the other player chooses call or fold; otherwise the higher card
-   wins at showdown.
-4. The bankroll, hand history, and equilibrium-accuracy ledger update.
-5. The margin proof opens with every decision from that hand and its exact GTO
-   frequency, then **Next hand** deals again.
+Kuhn poker has only a Jack, Queen, and King, but it keeps the parts of poker that
+make strategy interesting: hidden information, betting, bluffing, calling, and
+folding. Its small game tree has a closed-form Nash equilibrium, so the feedback can
+show exact frequencies instead of a heuristic bot's opinion.
 
-## Stack
+Bluff Call fixes the equilibrium parameter at `alpha = 0.2`. At the opening
+decision, that means bluffing with a Jack 20% of the time, never betting a Queen,
+and value-betting a King 60% of the time. The opponent samples its actions from the
+same equilibrium table used to build the post-hand explanation.
 
-- TypeScript, built with [Vite](https://vitejs.dev/)
-- [Vitest](https://vitest.dev/) for unit tests (game rules + solver correctness)
-- Static, self-contained output — no server, no backend, no binary assets
+## What the game shows you
 
-## Status
+- **An opponent you cannot exploit:** every AI action is sampled from the solved
+  strategy for its card and the current betting history.
+- **A proof tied to the hand:** the reveal names the actor, card, chosen action, and
+  exact equilibrium frequency for every decision that occurred.
+- **A useful practice signal:** equilibrium accuracy tracks how often your choices
+  matched an action with at least 50% equilibrium probability.
+- **A reconstructable session:** the ledger records both cards, the complete action
+  sequence, the outcome, and your chip result for each finished hand.
 
-Playable end to end: deal, bet/check/call/fold, AI sampled from the real equilibrium,
-bankroll, hand history, and the margin-proof reveal. See
-[`docs/VISION.md`](docs/VISION.md) for the product plan, [`docs/BACKLOG.md`](docs/BACKLOG.md)
-for the story-level build breakdown, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for
-how the modules fit together.
+## Play one hand
 
-## Development
+1. Ante one chip and choose **Check** or **Bet** with your card.
+2. Wait for the AI to sample its response from the equilibrium strategy.
+3. If you face a bet, choose **Call** or **Fold**. Otherwise the hand reaches
+   showdown.
+4. Read the margin proof, compare your decisions, then choose **Next hand**.
 
-```bash
-npm install
-npm run dev      # local dev server
-npm test         # run the test suite
-npm run build    # production build to dist/
+The current bankroll survives a reload in the same browser tab. Hand history and
+accuracy reset with a new session. Sound is synthesized in the browser, and the
+mute preference persists locally.
+
+For a reproducible deal and AI action sequence, add a numeric seed:
+
+```text
+http://localhost:5173/?seed=42
 ```
 
-Add `?seed=<number>` to the dev URL to make dealing and AI actions deterministic — useful
-for manually reaching a specific line (e.g. a bluff) while testing.
+## Run locally
+
+Requires Node.js 20 or newer.
+
+```bash
+git clone https://github.com/ctkrug/bluff-call.git
+cd bluff-call
+npm ci
+npm run dev
+```
+
+Vite prints the local URL. Open it in a browser and play immediately; there is no
+account, backend, or data service to configure.
+
+## Verify the project
+
+```bash
+npm run lint           # ESLint across TypeScript and tests
+npm test               # Full Vitest suite
+npm run test:coverage  # Core game coverage with V8
+npm run build          # Type-check and create the static site
+npm run preview        # Serve the production build locally
+```
+
+The core game modules are pure TypeScript with an injected random-number source, so
+deals and mixed strategies can be tested deterministically. The production output
+uses relative asset paths and can be served from the `/bluff-call/` subpath.
+
+## Project guide
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) maps the rules, equilibrium,
+  persistence, sound, and UI layers.
+- [`docs/DESIGN.md`](docs/DESIGN.md) records the paper-and-ink direction, tokens,
+  responsive layout, and feedback plan.
+- [`docs/POSITIONING.md`](docs/POSITIONING.md) defines the audience and product
+  promise.
+- [`docs/VISION.md`](docs/VISION.md) and [`docs/BACKLOG.md`](docs/BACKLOG.md) capture
+  the product scope and completed acceptance criteria.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE)
+
+More of Charlie's projects: [apps.charliekrug.com](https://apps.charliekrug.com)
