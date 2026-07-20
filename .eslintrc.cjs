@@ -15,5 +15,5 @@ module.exports = {
     es2020: true,
     node: true,
   },
-  ignorePatterns: ["dist", "node_modules"],
+  ignorePatterns: ["dist", "site", "node_modules"],
 };
