@@ -57,6 +57,14 @@ describe("recordHand", () => {
     expect(next.sessionHigh).toBe(25);
   });
 
+  it("does not repeat a milestone when the balance exactly equals the high", () => {
+    const stats = { ...createSessionStats(20), sessionHigh: 25 };
+    const reveal = buildReveal(["check", "check"], "J", "K", 0.1);
+    const { milestoneReached, stats: next } = recordHand(stats, reveal, 25);
+    expect(milestoneReached).toBe(false);
+    expect(next.sessionHigh).toBe(25);
+  });
+
   it("accumulates across multiple hands rather than resetting", () => {
     let stats = createSessionStats(20);
     const revealA = buildReveal(["bet", "fold"], "K", "J", 0.2);
