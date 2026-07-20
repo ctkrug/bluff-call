@@ -31,6 +31,11 @@ describe("app bootstrap", () => {
       .filter((b) => !b.disabled)
       .map((b) => b.dataset.action);
     expect(enabled.sort()).toEqual(["bet", "check"]);
+
+    const celebration = document.getElementById("celebration");
+    expect(celebration).toHaveAttribute("role", "dialog");
+    expect(celebration).toHaveAttribute("aria-modal", "true");
+    expect(celebration).toHaveAttribute("aria-labelledby", "celebration-title");
   });
 
   it("advances the hand and shows the reveal panel after checking through to showdown", async () => {
