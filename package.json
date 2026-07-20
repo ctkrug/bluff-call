@@ -2,7 +2,7 @@
   "name": "bluff-call",
   "version": "1.0.0",
   "private": true,
-  "description": "A single-player bluffing game against an AI that plays the solved Nash equilibrium for Kuhn poker.",
+  "description": "Play Kuhn poker against its solved equilibrium and see the optimal move after every hand.",
   "license": "MIT",
   "repository": {
     "type": "git",
