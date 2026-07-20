@@ -29,7 +29,11 @@ export interface Deal {
 export function dealHand(rng: Rng): Deal {
   const shuffled = [...RANKS];
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(rng() * (i + 1));
+    const roll = rng();
+    if (!Number.isFinite(roll) || roll < 0 || roll >= 1) {
+      throw new RangeError(`RNG must return a finite value in [0, 1), got ${roll}`);
+    }
+    const j = Math.floor(roll * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j] as Rank, shuffled[i] as Rank];
   }
   const [player, opponent, undealt] = shuffled as [Rank, Rank, Rank];
