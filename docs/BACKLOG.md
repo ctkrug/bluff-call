@@ -101,7 +101,7 @@ moment — it must be reachable before anything else in this backlog is built.
   assets — with a mute toggle.
   - Acceptance criteria:
     - No `.mp3`/`.wav`/`.ogg` files exist anywhere in the repo; grep for common audio
-      extensions returns nothing under `src/` or `dist/`.
+      extensions returns nothing under `src/` or `site/`.
     - Toggling mute persists across a page reload via `localStorage`.
     - The `AudioContext` is created lazily on first user gesture, and code that
       touches WebAudio is guarded so tests (no real audio hardware) don't throw.

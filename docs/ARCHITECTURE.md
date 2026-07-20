@@ -83,8 +83,8 @@ npm install
 npm run dev      # local dev server
 npm test         # vitest run — all game/ and ui/ modules
 npm run test:coverage # V8 coverage for all core game modules
-npm run build    # tsc --noEmit && vite build -> dist/
+npm run build    # tsc --noEmit && vite build -> site/
 ```
 
-The build is static and base-path-relative (`vite.config.ts` sets `base: "./"`), so `dist/` can
+The build is static and base-path-relative (`vite.config.ts` sets `base: "./"`), so `site/` can
 be served from a subpath like `apps.charliekrug.com/bluff-call/` with no server-side changes.
