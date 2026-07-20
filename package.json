@@ -1,6 +1,6 @@
 {
   "name": "bluff-call",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "A single-player bluffing game against an AI that plays the solved Nash equilibrium for Kuhn poker.",
   "license": "MIT",
