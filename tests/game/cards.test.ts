@@ -45,4 +45,11 @@ describe("dealHand", () => {
     // 3 ranks, 2 distinct slots => 6 possible player/opponent pairings.
     expect(seen.size).toBe(6);
   });
+
+  it.each([Number.NaN, -0.01, 1, Number.POSITIVE_INFINITY])(
+    "rejects an out-of-range RNG value (%s)",
+    (roll) => {
+      expect(() => dealHand(() => roll)).toThrow(RangeError);
+    },
+  );
 });
