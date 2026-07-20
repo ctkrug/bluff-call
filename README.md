@@ -23,6 +23,18 @@ No approximation, no heuristic bot's guess.
 - **The reveal**: after every hand, an annotated breakdown shows the equilibrium
   action and frequency for the cards involved, and how your actual decision compared.
 
+![A completed Bluff Call hand with the equilibrium proof in the margin](docs/assets/bluff-call-gameplay.png)
+
+### One hand, start to finish
+
+1. You are dealt one of three cards and act first: check or bet.
+2. The AI responds by sampling the solved equilibrium for its hidden card.
+3. If a bet is made, the other player chooses call or fold; otherwise the higher card
+   wins at showdown.
+4. The bankroll, hand history, and equilibrium-accuracy ledger update.
+5. The margin proof opens with every decision from that hand and its exact GTO
+   frequency, then **Next hand** deals again.
+
 ## Stack
 
 - TypeScript, built with [Vite](https://vitejs.dev/)
