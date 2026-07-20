@@ -69,4 +69,17 @@ describe("app bootstrap", () => {
       .sort();
     expect(enabled).toEqual(["bet", "check"]);
   });
+
+  it("starts a playable session when persisted bankroll data is corrupt", async () => {
+    window.sessionStorage.setItem("bluff-call:bankroll:v1", "{broken json");
+
+    await import("../../src/main");
+
+    expect(document.getElementById("bankroll-value")?.textContent).toBe("20");
+    const enabled = Array.from(document.querySelectorAll<HTMLButtonElement>("#action-row button"))
+      .filter((button) => !button.disabled)
+      .map((button) => button.dataset.action)
+      .sort();
+    expect(enabled).toEqual(["bet", "check"]);
+  });
 });
