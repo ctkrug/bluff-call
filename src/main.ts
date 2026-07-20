@@ -104,9 +104,15 @@ function renderShell(): string {
         <ul class="margin-decisions" id="margin-decisions"></ul>
         <button id="next-hand" class="btn btn-bet" type="button">Next hand</button>
       </div>
-      <div class="celebration" id="celebration">
+      <div
+        class="celebration"
+        id="celebration"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="celebration-title"
+      >
         <div class="celebration-card">
-          <h2 class="celebration-title">New session high!</h2>
+          <h2 class="celebration-title" id="celebration-title">New session high!</h2>
           <div class="celebration-stats" id="celebration-stats"></div>
           <button id="celebration-close" class="btn btn-bet" type="button">Keep playing</button>
         </div>
