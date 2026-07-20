@@ -595,6 +595,52 @@
   display: flex;
 }
 
+.celebration::before,
+.celebration::after {
+  content: "";
+  position: absolute;
+  width: min(34vw, 360px);
+  aspect-ratio: 1;
+  opacity: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(179, 49, 44, 0.72) 0 12%, transparent 13%),
+    radial-gradient(circle at 22% 35%, rgba(179, 49, 44, 0.58) 0 3%, transparent 4%),
+    radial-gradient(circle at 76% 24%, rgba(179, 49, 44, 0.62) 0 4%, transparent 5%),
+    radial-gradient(circle at 82% 68%, rgba(179, 49, 44, 0.52) 0 2.5%, transparent 3.5%),
+    radial-gradient(circle at 35% 82%, rgba(179, 49, 44, 0.48) 0 3.5%, transparent 4.5%);
+}
+
+.celebration::before {
+  left: 7%;
+  top: 12%;
+}
+
+.celebration::after {
+  right: 5%;
+  bottom: 8%;
+  transform: rotate(155deg);
+}
+
+.celebration.open::before,
+.celebration.open::after {
+  animation: ink-burst 520ms var(--ease-out) forwards;
+}
+
+@keyframes ink-burst {
+  from {
+    opacity: 0;
+    transform: scale(0.18) rotate(-14deg);
+  }
+  65% {
+    opacity: 0.42;
+  }
+  to {
+    opacity: 0.24;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 .celebration-card,
 .confirmation-card {
   background: var(--surface-1);
@@ -608,6 +654,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  position: relative;
+  z-index: 1;
 }
 
 .confirmation-card {
@@ -819,5 +867,12 @@
 
   .card-rank {
     font-size: 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .celebration::before,
+  .celebration::after {
+    display: none;
   }
 }
