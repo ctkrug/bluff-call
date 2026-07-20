@@ -196,10 +196,13 @@ function mount(): void {
       <div><span class="celebration-stat-value">${state.bankroll.balance}</span><span class="celebration-stat-label">Bankroll</span></div>
     `;
     els.celebration.classList.add("open");
+    els.celebration.setAttribute("aria-hidden", "false");
+    els.celebrationClose.focus();
   }
 
   function hideCelebration(): void {
     els.celebration.classList.remove("open");
+    els.celebration.setAttribute("aria-hidden", "true");
   }
 
   function renderMuteState(muted: boolean): void {
@@ -349,6 +352,18 @@ function mount(): void {
   els.celebrationClose.addEventListener("click", () => {
     hideCelebration();
     startHand();
+  });
+
+  els.celebration.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      hideCelebration();
+      startHand();
+      return;
+    }
+    if (event.key === "Tab") {
+      event.preventDefault();
+      els.celebrationClose.focus();
+    }
   });
 
   els.muteToggle.addEventListener("click", () => {

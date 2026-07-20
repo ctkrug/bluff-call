@@ -142,6 +142,7 @@ export function renderShell(): string {
         role="dialog"
         aria-modal="true"
         aria-labelledby="celebration-title"
+        aria-hidden="true"
       >
         <div class="celebration-card">
           <h2 class="celebration-title" id="celebration-title">New session high!</h2>

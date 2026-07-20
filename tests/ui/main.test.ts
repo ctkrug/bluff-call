@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 describe("app bootstrap", () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="app"></div>';
+    window.history.replaceState(null, "", "/");
     window.sessionStorage.clear();
     window.localStorage.clear();
     // main.ts mounts itself as an import side effect; reset the module
@@ -36,6 +37,7 @@ describe("app bootstrap", () => {
     expect(celebration?.getAttribute("role")).toBe("dialog");
     expect(celebration?.getAttribute("aria-modal")).toBe("true");
     expect(celebration?.getAttribute("aria-labelledby")).toBe("celebration-title");
+    expect(celebration?.getAttribute("aria-hidden")).toBe("true");
   });
 
   it("advances the hand and shows the reveal panel after checking through to showdown", async () => {
@@ -91,5 +93,24 @@ describe("app bootstrap", () => {
     const muteToggle = document.getElementById("mute-toggle");
     expect(muteToggle?.getAttribute("aria-pressed")).toBe("true");
     expect(muteToggle?.getAttribute("aria-label")).toBe("Unmute sound");
+  });
+
+  it("moves focus into the milestone dialog and contains keyboard focus", async () => {
+    vi.useFakeTimers();
+    window.history.replaceState(null, "", "/?seed=2");
+    await import("../../src/main");
+
+    document.querySelector<HTMLButtonElement>('button[data-action="bet"]')?.click();
+    await vi.advanceTimersByTimeAsync(600);
+    expect(document.getElementById("status-line")?.textContent).toContain("You win");
+
+    document.getElementById("next-hand")?.click();
+    const celebration = document.getElementById("celebration");
+    const closeButton = document.getElementById("celebration-close");
+    expect(celebration?.getAttribute("aria-hidden")).toBe("false");
+    expect(document.activeElement).toBe(closeButton);
+
+    closeButton?.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", bubbles: true }));
+    expect(document.activeElement).toBe(closeButton);
   });
 });
